@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuthStore } from "@/entities/auth/model/store";
+import { useAuthStore } from "@/entities/auth/model/auth-store";
 
 export const AuthenticatedRoute = () => {
   const { isAuthenticated } = useAuthStore();

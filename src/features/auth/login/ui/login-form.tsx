@@ -54,7 +54,6 @@ export const LoginForm = () => {
           />
         )}
       />
-
       <Controller
         name="password"
         control={control}
@@ -68,15 +67,14 @@ export const LoginForm = () => {
           />
         )}
       />
-
       <Button type="submit" className="w-full" disabled={isPending}>
         {isPending ? "로그인 중..." : "로그인"}
       </Button>
-
       {/* 에러 메시지 표시 */}
       {isLoginError && (
         <p className="text-red-500">
-          {loginError?.message || "알 수 없는 오류가 발생했습니다."}
+          {loginError?.response?.data?.error ||
+            "알 수 없는 오류가 발생했습니다."}
         </p>
       )}
     </form>

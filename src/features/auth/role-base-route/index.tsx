@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthStore } from "@/entities/auth/model/store";
+import { useAuthStore } from "@/entities/auth/model/auth-store";
 
 interface RoleBasedRouteProps {
   allowedRoles: string[];

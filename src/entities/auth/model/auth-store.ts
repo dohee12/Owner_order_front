@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 // User 타입 정의
-interface User {
+export interface User {
   id: string;
   storeName: string;
   storeId: string;

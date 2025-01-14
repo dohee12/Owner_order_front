@@ -4,6 +4,9 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react()],
+  define: {
+    "process.env": {}, // 빈 객체로 정의
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
