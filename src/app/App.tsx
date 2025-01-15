@@ -3,8 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import { AuthLayout } from "@/widgets/layouts/auth-layout";
 import { MainLayout } from "@/widgets/layouts/main-layout";
 import { LoginPage } from "@/pages/auth/login";
-import { AuthenticatedRoute } from "@/features/auth/authenticated-route";
-import { RoleBasedRoute } from "@/features/auth/role-base-route";
+import { UnauthenticatedRoute } from "@/features/auth/route/unauthenticated-route";
+import { AuthenticatedRoute } from "@/features/auth/route/authenticated-route";
+import { RoleBasedRoute } from "@/features/auth/route/role-base-route";
 
 // Lazy loading for pages
 const DashboardPage = lazy(() => import("@/pages/dashboard"));
@@ -18,8 +19,10 @@ const App = () => {
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         {/* 로그인 안했을 때의 페이지들 */}
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<LoginPage />} />
+        <Route element={<UnauthenticatedRoute />}>
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<LoginPage />} />
+          </Route>
         </Route>
 
         {/* 로그인 했을 때의 페이지들 */}

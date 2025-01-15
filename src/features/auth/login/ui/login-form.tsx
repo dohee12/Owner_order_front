@@ -2,7 +2,6 @@ import { useLogin } from "@/entities/auth/model/use-login";
 import { AuthInput } from "@/entities/auth/ui/auth-input";
 import { Button } from "@/shared/ui/button";
 import { useForm, Controller } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
 interface LoginFormValues {
   id: string;
@@ -10,14 +9,7 @@ interface LoginFormValues {
 }
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
-
-  const {
-    mutate: login,
-    isPending,
-    error: loginError,
-    isError: isLoginError,
-  } = useLogin();
+  const { mutate: login, isPending, error: loginError, isError: isLoginError } = useLogin();
 
   const {
     control,
@@ -31,12 +23,7 @@ export const LoginForm = () => {
   });
 
   const onSubmit = (data: LoginFormValues) => {
-    login(data, {
-      onSuccess: () => {
-        // 로그인 성공 후 이동할 페이지
-        navigate("/dashboard"); // 예시: 대시보드로 리디렉션
-      },
-    });
+    login(data);
   };
 
   return (
@@ -46,12 +33,7 @@ export const LoginForm = () => {
         control={control}
         rules={{ required: "아이디를 입력하세요" }}
         render={({ field }) => (
-          <AuthInput
-            {...field}
-            type="text"
-            placeholder="아이디를 입력하세요"
-            error={errors.id}
-          />
+          <AuthInput {...field} type="text" placeholder="아이디를 입력하세요" error={errors.id} />
         )}
       />
       <Controller
@@ -73,8 +55,7 @@ export const LoginForm = () => {
       {/* 에러 메시지 표시 */}
       {isLoginError && (
         <p className="text-red-500">
-          {loginError?.response?.data?.error ||
-            "알 수 없는 오류가 발생했습니다."}
+          {loginError?.response?.data?.error || "알 수 없는 오류가 발생했습니다."}
         </p>
       )}
     </form>
