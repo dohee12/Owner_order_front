@@ -17,9 +17,9 @@ const axiosInstanceAuth = axios.create({
 axiosInstanceAuth.interceptors.request.use(
   (config) => {
     // localStorage에서 토큰을 가져와 헤더에 추가
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+      config.headers["ACCESS_TOKEN"] = `${token}`;
     }
     return config;
   },
