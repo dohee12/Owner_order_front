@@ -4,3 +4,12 @@ export interface ApiResponse<T> {
   data: T | null; // 응답 데이터 (성공 시, 실패 시 null)
   message: string; // 메시지 (성공/실패에 대한 메시지)
 }
+
+// 공통 응답 타입
+export interface StatusResponse {
+  status: string; // 성공 또는 실패 상태
+}
+
+export interface MessageResponse {
+  message: string; // 성공 또는 실패 상태
+}
