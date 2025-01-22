@@ -10,17 +10,13 @@ const axiosInstanceAuth = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
   timeout: 10000, // 요청 타임아웃 10초
 });
 
 // 요청 인터셉터 설정: 요청 전에 토큰을 헤더에 추가
 axiosInstanceAuth.interceptors.request.use(
   (config) => {
-    // localStorage에서 토큰을 가져와 헤더에 추가
-    const token = localStorage.getItem("access_token");
-    if (token) {
-      config.headers["ACCESS_TOKEN"] = `${token}`;
-    }
     return config;
   },
   (error) => {

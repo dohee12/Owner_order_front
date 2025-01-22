@@ -5,5 +5,5 @@ import axiosInstance from "@/shared/api/axios-instance";
  * @returns {Promise<void>} 로그아웃 응답
  */
 export const logoutApi = async (): Promise<void> => {
-  await axiosInstance.post("/api/v1/owner/logout");
+  await axiosInstance.post("/logout");
 };

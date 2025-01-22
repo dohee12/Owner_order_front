@@ -6,14 +6,11 @@ import { LoginRequest, LoginResponse } from "../model/auth-types";
 /**
  * 로그인 API 호출
  * @param credentials 로그인 요청 정보 (전화번호, 비밀번호)
- * @returns {Promise<ApiResponse<User>>} 로그인 응답
+ * @returns {Promise<ApiResponse<LoginResponse>>} 로그인 응답
  */
-export const loginApi = async (
-  credentials: LoginRequest
-): Promise<ApiResponse<LoginResponse>> => {
-  const response = await axiosInstance.post<ApiResponse<LoginResponse>>(
-    "/api/v1/owner/login",
-    credentials
-  );
+export const loginApi = async (credentials: LoginRequest): Promise<ApiResponse<LoginResponse>> => {
+  const response = await axiosInstance.post<ApiResponse<LoginResponse>>("/login", credentials);
+
+  // 세션 쿠키 기반이므로 더 이상 accessToken 저장 필요 없음
   return response.data;
 };

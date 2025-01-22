@@ -1,12 +1,8 @@
-import { useLogin } from "@/entities/auth/model/use-login";
+import { useLogin } from "@/entities/auth/hooks/use-login";
+import { LoginRequest } from "@/entities/auth/model/auth-types";
 import { AuthInput } from "@/entities/auth/ui/auth-input";
 import { Button } from "@/shared/ui/button";
 import { useForm, Controller } from "react-hook-form";
-
-interface LoginFormValues {
-  id: string;
-  password: string;
-}
 
 export const LoginForm = () => {
   const { mutate: login, isPending, error: loginError, isError: isLoginError } = useLogin();
@@ -15,25 +11,30 @@ export const LoginForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormValues>({
+  } = useForm<LoginRequest>({
     defaultValues: {
-      id: "", // 초기 값 명시
+      phoneNumber: "", // 초기 값 명시
       password: "", // 초기 값 명시
     },
   });
 
-  const onSubmit = (data: LoginFormValues) => {
+  const onSubmit = (data: LoginRequest) => {
     login(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <Controller
-        name="id"
+        name="phoneNumber"
         control={control}
         rules={{ required: "아이디를 입력하세요" }}
         render={({ field }) => (
-          <AuthInput {...field} type="text" placeholder="아이디를 입력하세요" error={errors.id} />
+          <AuthInput
+            {...field}
+            type="text"
+            placeholder="아이디를 입력하세요"
+            error={errors.phoneNumber}
+          />
         )}
       />
       <Controller

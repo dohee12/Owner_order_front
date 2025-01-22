@@ -1,6 +1,7 @@
+// entities/auth/hooks/use-logout
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { logoutApi } from "../api/logout";
-import { useAuthStore } from "../store/auth-store";
+import { useAuthStore } from "../model/auth-store";
 
 /**
  * 로그아웃 훅
