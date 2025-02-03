@@ -5,17 +5,18 @@ import { MainLayout } from "@/widgets/layouts/main-layout";
 import { LoginPage } from "@/pages/auth/login";
 import { AuthenticatedRoute } from "@/features/auth/route/authenticated-route";
 import { UnauthenticatedRoute } from "@/features/auth/route/unauthenticated-route";
-import { RoleBasedRoute } from "@/features/auth/route/role-base-route";
+import { Loader } from "@/shared/ui/loader";
+// import { RoleBasedRoute } from "@/features/auth/route/role-base-route";
 
 const DashboardPage = lazy(() => import("@/pages/dashboard"));
 const MenuManagementPage = lazy(() => import("@/pages/menu-management"));
 const OrderManagementPage = lazy(() => import("@/pages/order-management"));
-const SettingsPage = lazy(() => import("@/pages/settings"));
+// const SettingsPage = lazy(() => import("@/pages/settings"));
 const UnauthorizedPage = lazy(() => import("@/pages/unauthorized"));
 
 const App = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <Routes>
         {/* '/' 경로에서 인증 상태를 확인하고 리다이렉트 */}
         <Route path="/" element={<AuthenticatedRoute />} />
@@ -34,10 +35,10 @@ const App = () => {
             <Route path="/menu" element={<MenuManagementPage />} />
             <Route path="/orders" element={<OrderManagementPage />} />
 
-            {/* 관리자만 접근 가능한 페이지 */}
+            {/* 관리자만 접근 가능한 페이지
             <Route element={<RoleBasedRoute allowedRoles={["admin"]} />}>
               <Route path="/settings" element={<SettingsPage />} />
-            </Route>
+            </Route> */}
           </Route>
         </Route>
 
