@@ -11,7 +11,7 @@ interface MenuItem {
 }
 
 const MenuManagementPage = () => {
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([
+  const [menuItems] = useState<MenuItem[]>([
     {
       id: 1,
       name: "아메리카노",
@@ -30,21 +30,19 @@ const MenuManagementPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">메뉴 관리</h1>
         <Button>새 메뉴 추가</Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {menuItems.map((item) => (
           <Card key={item.id} className="p-4">
-            <div className="flex justify-between items-start">
+            <div className="flex items-start justify-between">
               <div>
                 <h3 className="font-medium">{item.name}</h3>
                 <p className="text-sm text-gray-500">{item.category}</p>
-                <p className="mt-2 font-bold">
-                  ₩ {item.price.toLocaleString()}
-                </p>
+                <p className="mt-2 font-bold">₩ {item.price.toLocaleString()}</p>
               </div>
               <div className="space-x-2">
                 <Button variant="outline" size="sm">

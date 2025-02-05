@@ -19,6 +19,6 @@ export const useMenuStore = create<MenuState>((set) => ({
     })),
   deleteMenu: (id) =>
     set((state) => ({
-      Menus: state.Menus.filter((item) => item.id !== id),
+      Menus: state.Menus.filter((item) => item.id !== Number(id)),
     })),
 }));
