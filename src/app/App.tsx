@@ -11,7 +11,7 @@ import { Loader } from "@/shared/ui/loader";
 const DashboardPage = lazy(() => import("@/pages/dashboard"));
 const MenuManagementPage = lazy(() => import("@/pages/menu-management"));
 const OrderManagementPage = lazy(() => import("@/pages/order-management"));
-// const SettingsPage = lazy(() => import("@/pages/settings"));
+const SettingsPage = lazy(() => import("@/pages/settings"));
 const UnauthorizedPage = lazy(() => import("@/pages/unauthorized"));
 
 const App = () => {
@@ -34,6 +34,7 @@ const App = () => {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/menu" element={<MenuManagementPage />} />
             <Route path="/orders" element={<OrderManagementPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
 
             {/* 관리자만 접근 가능한 페이지
             <Route element={<RoleBasedRoute allowedRoles={["admin"]} />}>
