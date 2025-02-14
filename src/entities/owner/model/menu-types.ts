@@ -3,6 +3,7 @@ import { Option } from "./option-types";
 // 메뉴 기본 정보 타입
 export interface Menu {
   id: number;
+  name: string;
   price: number;
   menuImg: string;
   storeId: number;
@@ -18,7 +19,7 @@ export interface MenuDetail extends Menu {
 export interface CreateMenuRequest {
   menu_name: string; // 메뉴 이름
   price: number; // 가격
-  optList: number[]; // 옵션 ID 리스트
+  opt_list: Option[]; // 옵션 ID 리스트
 }
 
 // 메뉴 생성 응답 타입

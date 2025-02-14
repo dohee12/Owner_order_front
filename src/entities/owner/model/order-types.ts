@@ -1,3 +1,5 @@
+import { Option } from "./option-types";
+
 export interface Order {
   oid: number;
   order_at: string;
@@ -6,7 +8,7 @@ export interface Order {
   order_number: number;
   order_details: {
     menu_name: string;
-    option_list: string[];
+    option_list: Option[];
   }[];
 }
 

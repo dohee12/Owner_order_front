@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  UseMutationResult,
-  useQuery,
-} from "@tanstack/react-query";
+import { useMutation, UseMutationResult, useQuery } from "@tanstack/react-query";
 
 import { AxiosError } from "axios";
 import { ApiResponse, MessageResponse } from "@/shared/api/type";
@@ -41,6 +37,7 @@ export const useGetMenuDetail = (menuId: number) => {
   const query = useQuery<ApiResponse<Menu>, AxiosError>({
     queryKey: ["menuDetail", menuId],
     queryFn: () => getMenuDetailApi(menuId),
+    enabled: !!menuId, // menuId가 falsy이면 쿼리가 실행되지 않음
   });
 
   return query;
@@ -116,8 +113,7 @@ export const useAddOptionToMenu = () => {
     AxiosError,
     AddMenuOptionsRequest
   > = useMutation({
-    mutationFn: ({ menuId, optList }) =>
-      addOptionToMenuApi({ menuId, optList }),
+    mutationFn: ({ menuId, optList }) => addOptionToMenuApi({ menuId, optList }),
     onSuccess: (response) => {
       if (response.status === 200) {
         console.log("메뉴에 옵션이 추가되었습니다.");
@@ -138,8 +134,7 @@ export const useRemoveOptionFromMenu = () => {
     AxiosError,
     RemoveMenuOptionRequest
   > = useMutation({
-    mutationFn: ({ menuId, optionId }) =>
-      removeOptionFromMenuApi({ menuId, optionId }),
+    mutationFn: ({ menuId, optionId }) => removeOptionFromMenuApi({ menuId, optionId }),
     onSuccess: (response) => {
       if (response.status === 200) {
         console.log("메뉴에서 옵션이 제거되었습니다.");

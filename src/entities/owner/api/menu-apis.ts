@@ -1,4 +1,4 @@
-import axiosInstance from "@/shared/api/axios-instance";
+import axiosInstanceAuth from "@/shared/api/axios-instance-auth";
 import { ApiResponse, MessageResponse } from "@/shared/api/type";
 import {
   AddMenuOptionsRequest,
@@ -12,13 +12,13 @@ import {
 
 // 메뉴 리스트 가져오기
 export const getMenuListApi = async (): Promise<ApiResponse<Menu[]>> => {
-  const response = await axiosInstance.get<ApiResponse<Menu[]>>("/menuList");
+  const response = await axiosInstanceAuth.get<ApiResponse<Menu[]>>("/menuList");
   return response.data;
 };
 
 // 특정 메뉴의 상세 정보 가져오기
 export const getMenuDetailApi = async (menuId: number): Promise<ApiResponse<Menu>> => {
-  const response = await axiosInstance.get<ApiResponse<Menu>>(`/menu/detail`, {
+  const response = await axiosInstanceAuth.get<ApiResponse<Menu>>(`/menu/detail`, {
     params: {
       menuId: menuId,
     },
@@ -30,7 +30,7 @@ export const getMenuDetailApi = async (menuId: number): Promise<ApiResponse<Menu
 export const createMenuApi = async (
   menuData: CreateMenuRequest
 ): Promise<ApiResponse<CreateMenuResponse>> => {
-  const response = await axiosInstance.post<ApiResponse<CreateMenuResponse>>(
+  const response = await axiosInstanceAuth.post<ApiResponse<CreateMenuResponse>>(
     "/menu/create",
     menuData
   );
@@ -42,7 +42,7 @@ export const updateMenuApi = async (
   menuId: number,
   menuData: EditMenuRequest
 ): Promise<ApiResponse<EditMenuResponse>> => {
-  const response = await axiosInstance.put<ApiResponse<EditMenuResponse>>(
+  const response = await axiosInstanceAuth.put<ApiResponse<EditMenuResponse>>(
     `/menu/edit?menu_id=${menuId}`,
     menuData
   );
@@ -51,7 +51,7 @@ export const updateMenuApi = async (
 
 // 메뉴 삭제
 export const deleteMenuApi = async (menuId: number): Promise<ApiResponse<MessageResponse>> => {
-  const response = await axiosInstance.delete<ApiResponse<MessageResponse>>(
+  const response = await axiosInstanceAuth.delete<ApiResponse<MessageResponse>>(
     `/menu/delete?menu_id=${menuId}`
   );
   return response.data;
@@ -62,7 +62,7 @@ export const addOptionToMenuApi = async ({
   menuId,
   optList,
 }: AddMenuOptionsRequest): Promise<ApiResponse<MessageResponse>> => {
-  const response = await axiosInstance.post<ApiResponse<MessageResponse>>(
+  const response = await axiosInstanceAuth.post<ApiResponse<MessageResponse>>(
     `/menu/option/add?menu_id=${menuId}`,
     { optList }
   );
@@ -74,7 +74,7 @@ export const removeOptionFromMenuApi = async ({
   menuId,
   optionId,
 }: RemoveMenuOptionRequest): Promise<ApiResponse<MessageResponse>> => {
-  const response = await axiosInstance.delete<ApiResponse<MessageResponse>>(
+  const response = await axiosInstanceAuth.delete<ApiResponse<MessageResponse>>(
     `/menu/option/remove?menu_id=${menuId}&option_id=${optionId}`
   );
   return response.data;
