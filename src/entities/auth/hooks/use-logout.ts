@@ -11,9 +11,11 @@ export const useLogout = () => {
   const { logout } = useAuthStore();
 
   const mutation: UseMutationResult<void, Error> = useMutation({
+    mutationKey: ["logout"],
     mutationFn: () => logoutApi(),
     onSuccess: () => {
       logout(); // 상태에서 사용자 정보 삭제
+      sessionStorage.clear();
     },
     onError: () => {
       // 로그아웃 실패 시 처리할 내용

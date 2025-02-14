@@ -13,6 +13,7 @@ export const useLogin = () => {
     AxiosError<{ error: string }>,
     LoginRequest
   > = useMutation({
+    mutationKey: ["login"],
     mutationFn: (payload: LoginRequest) => loginApi(payload),
     onSuccess: (data: LoginResponse) => {
       if (data) {
