@@ -1,4 +1,5 @@
 import { renewTokenApi } from "@/entities/auth/api/renew-token";
+import { useAuthStore } from "@/entities/auth/model/auth-store";
 
 import axios from "axios";
 
@@ -45,34 +46,30 @@ axiosInstanceAuth.interceptors.request.use(
 
 // 응답 인터셉터 설정: 응답을 받은 후 처리
 axiosInstanceAuth.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const { logout } = useAuthStore.getState(); // ✅ useAuthStore에서 로그아웃 함수 가져오기
 
-    // 인증 오류 처리
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    // 401 Unauthorized 처리
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
         const data = await renewTokenApi();
         const newAccessToken = data.accessToken;
 
-        // 새로운 토큰을 저장
         sessionStorage.setItem("accessToken", newAccessToken);
-
-        // axios 인스턴스의 기본 헤더에 새로운 토큰 설정
         axiosInstanceAuth.defaults.headers.common["access_token"] = newAccessToken;
-
-        // 실패한 요청에 새로운 토큰 설정
         originalRequest.headers["access_token"] = newAccessToken;
 
         // 실패한 요청 재시도
         return axiosInstanceAuth(originalRequest);
       } catch (tokenRefreshError) {
         console.error("토큰 재발급 실패:", tokenRefreshError);
-        // 필요에 따라 로그아웃 처리 또는 사용자에게 알림
+
+        // ✅ 토큰 재발급도 실패한 경우, 자동 로그아웃 실행
+        logout();
       }
     }
 

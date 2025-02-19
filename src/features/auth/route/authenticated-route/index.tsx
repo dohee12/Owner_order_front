@@ -10,7 +10,7 @@ export const AuthenticatedRoute: React.FC = () => {
   const location = useLocation();
   const { mutate, isPending } = useTokenRenewal();
 
-  // 인증 상태가 아직 초기화되지 않은 경우 로딩 UI 표시
+  // 인증 상태가 초기화되지 않은 경우 로딩 UI 표시
   if (!isInitialized) {
     return <Loader />;
   }
@@ -26,10 +26,8 @@ export const AuthenticatedRoute: React.FC = () => {
       const currentTime = new Date().getTime();
       const timeUntilExpiration = expirationTime - currentTime;
 
-      if (timeUntilExpiration <= 10000) {
-        if (!isPending) {
-          mutate();
-        }
+      if (timeUntilExpiration <= 10000 && !isPending) {
+        mutate();
       }
     }
     return <Outlet />;
