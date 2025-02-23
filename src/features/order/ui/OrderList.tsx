@@ -11,11 +11,11 @@ export const orders: Order[] = [
     oid: 101,
     order_at: "2025-02-23 16:00",
     order_status: "ACCEPTED", // 진행
-    orderType: "포장",
+    order_type: "포장",
     order_details: [
       {
         menu_name: "아메리카노",
-        options: [
+        option_list: [
           { name: "샷 추가", quantity: 2 },
           { name: "우유 제거", quantity: 1 },
         ],
@@ -24,7 +24,7 @@ export const orders: Order[] = [
       },
       {
         menu_name: "카페라떼",
-        options: [{ name: "시럽 추가", quantity: 1 }],
+        option_list: [{ name: "시럽 추가", quantity: 1 }],
         quantity: 1,
         price: 5000,
       },
@@ -35,17 +35,17 @@ export const orders: Order[] = [
     oid: 102,
     order_at: "2024-10-31 14:00",
     order_status: "COMPLETED", // 완료
-    orderType: "매장",
+    order_type: "매장",
     order_details: [
       {
         menu_name: "바닐라 라떼",
-        options: [{ name: "바닐라 시럽 추가", quantity: 1 }],
+        option_list: [{ name: "바닐라 시럽 추가", quantity: 1 }],
         quantity: 1,
         price: 5500,
       },
       {
         menu_name: "치즈 케이크",
-        options: [],
+        option_list: [],
         quantity: 1,
         price: 7000,
       },
@@ -55,25 +55,25 @@ export const orders: Order[] = [
   {
     oid: 103,
     order_at: "2024-10-31 14:30",
-    order_status: "WAITING", // 대기
-    orderType: "포장",
+    order_status: "PENDING", // 대기
+    order_type: "포장",
     order_details: [
       {
         menu_name: "에스프레소",
-        options: [],
+        option_list: [],
         quantity: 1,
         price: 3000,
       },
       {
         menu_name: "티라미수",
-        options: [],
+        option_list: [],
         quantity: 1,
         price: 6500,
       },
     ],
     request: "",
   },
-  // ... 나머지 주문에도 orderType 속성을 추가
+  // ... 나머지 주문에도 order_type 속성을 추가
 ];
 
 const OrderList: React.FC = () => {
@@ -86,7 +86,7 @@ const OrderList: React.FC = () => {
   }, [activeStatus]);
 
   // 각 상태별 목록을 개별로 추출 (전체일 경우는 섹션 단위로 분리해서 렌더링)
-  const waitingOrders = filterOrdersByStatus(orders, "대기");
+  const PENDINGOrders = filterOrdersByStatus(orders, "대기");
   const acceptedOrders = filterOrdersByStatus(orders, "진행");
   const completedOrders = filterOrdersByStatus(orders, "완료");
   const canceledOrders = filterOrdersByStatus(orders, "취소");
@@ -123,31 +123,31 @@ const OrderList: React.FC = () => {
         <>
           <OrderSection
             title="대기"
-            orderList={waitingOrders}
+            orderList={PENDINGOrders}
             selectedOrderId={selectedOrder?.oid || null}
             onSelectOrder={setSelectedOrder}
-            onUpdateStatus={}
+            // onUpdateStatus={}
           />
           <OrderSection
             title="진행"
             orderList={acceptedOrders}
             selectedOrderId={selectedOrder?.oid || null}
             onSelectOrder={setSelectedOrder}
-            onUpdateStatus={}
+            // onUpdateStatus={}
           />
           <OrderSection
             title="완료"
             orderList={completedOrders}
             selectedOrderId={selectedOrder?.oid || null}
             onSelectOrder={setSelectedOrder}
-            onUpdateStatus={}
+            // onUpdateStatus={}
           />
           <OrderSection
             title="취소"
             orderList={canceledOrders}
             selectedOrderId={selectedOrder?.oid || null}
             onSelectOrder={setSelectedOrder}
-            onUpdateStatus={}
+            // onUpdateStatus={}
           />
         </>
       );
@@ -155,10 +155,10 @@ const OrderList: React.FC = () => {
       return (
         <OrderSection
           title="대기"
-          orderList={waitingOrders}
+          orderList={PENDINGOrders}
           selectedOrderId={selectedOrder?.oid || null}
           onSelectOrder={setSelectedOrder}
-          onUpdateStatus={}
+          // onUpdateStatus={}
         />
       );
     if (activeStatus === "진행")
@@ -168,7 +168,7 @@ const OrderList: React.FC = () => {
           orderList={acceptedOrders}
           selectedOrderId={selectedOrder?.oid || null}
           onSelectOrder={setSelectedOrder}
-          onUpdateStatus={}
+          // onUpdateStatus={}
         />
       );
     if (activeStatus === "완료")
@@ -178,7 +178,7 @@ const OrderList: React.FC = () => {
           orderList={completedOrders}
           selectedOrderId={selectedOrder?.oid || null}
           onSelectOrder={setSelectedOrder}
-          onUpdateStatus={}
+          // onUpdateStatus={}
         />
       );
     if (activeStatus === "취소")
@@ -188,7 +188,7 @@ const OrderList: React.FC = () => {
           orderList={canceledOrders}
           selectedOrderId={selectedOrder?.oid || null}
           onSelectOrder={setSelectedOrder}
-          onUpdateStatus={}
+          // onUpdateStatus={}
         />
       );
     return null;

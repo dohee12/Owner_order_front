@@ -13,7 +13,7 @@ export type Order = {
   oid: number;
   order_at: string;
   modified_at: string;
-  order_status: OrderStatus;
+  order_status: OrderStatusType;
   order_number: number;
   order_details: OrderDetail[];
   quantity: number;
