@@ -16,7 +16,7 @@ export const AuthenticatedRoute: React.FC = () => {
   }
 
   if (location.pathname === "/") {
-    const redirectPath = isAuthenticated ? "/dashboard" : "/login";
+    const redirectPath = isAuthenticated ? "/orders" : "/login";
     return <Navigate to={redirectPath} replace />;
   }
 

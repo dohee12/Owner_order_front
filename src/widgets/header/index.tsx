@@ -1,9 +1,6 @@
-import { useLogout } from "@/entities/auth/hooks/use-logout";
 import { Button } from "@/shared/ui/button";
 
 export const Header = () => {
-  const { mutate: logout } = useLogout();
-
   const handleMinimize = () => {
     window.electronAPI.minimize();
   };
@@ -26,9 +23,6 @@ export const Header = () => {
             </Button>
             <Button variant="outline" onClick={handleToggleFullScreen}>
               전체화면/창모드 전환
-            </Button>
-            <Button variant="outline" onClick={logout}>
-              로그아웃
             </Button>
           </div>
         </div>

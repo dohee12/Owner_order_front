@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/shared/ui/button";
-import { useGetMenuList, useCreateMenu } from "@/entities/menu/hooks/use-menu";
+import { useCreateMenu } from "@/entities/menu/hooks/use-create-menu";
+import { useGetMenuList } from "@/entities/menu/hooks/use-get-menu-list";
 import { Menu } from "@/entities/menu/model/menu-types";
 import { MenuCard } from "@/features/menu-management/components/MenuCard";
 import {
