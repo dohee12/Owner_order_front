@@ -86,7 +86,7 @@ const OrderList: React.FC = () => {
   }, [activeStatus]);
 
   // 각 상태별 목록을 개별로 추출 (전체일 경우는 섹션 단위로 분리해서 렌더링)
-  const PENDINGOrders = filterOrdersByStatus(orders, "대기");
+  const pendingOrders = filterOrdersByStatus(orders, "대기");
   const acceptedOrders = filterOrdersByStatus(orders, "진행");
   const completedOrders = filterOrdersByStatus(orders, "완료");
   const canceledOrders = filterOrdersByStatus(orders, "취소");
@@ -123,7 +123,7 @@ const OrderList: React.FC = () => {
         <>
           <OrderSection
             title="대기"
-            orderList={PENDINGOrders}
+            orderList={pendingOrders}
             selectedOrderId={selectedOrder?.oid || null}
             onSelectOrder={setSelectedOrder}
             // onUpdateStatus={}
@@ -155,7 +155,7 @@ const OrderList: React.FC = () => {
       return (
         <OrderSection
           title="대기"
-          orderList={PENDINGOrders}
+          orderList={pendingOrders}
           selectedOrderId={selectedOrder?.oid || null}
           onSelectOrder={setSelectedOrder}
           // onUpdateStatus={}

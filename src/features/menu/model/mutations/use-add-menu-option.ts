@@ -1,8 +1,8 @@
+import { addMenuOption } from "@/entities/menu/api/add-menu-option";
+import { AddMenuOptionsRequest } from "@/entities/menu/model/menu-types";
 import { ApiResponse, MessageResponse } from "@/shared/api/type";
 import { UseMutationResult, useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { addMenuOption } from "../api/add-menu-option";
-import { AddMenuOptionsRequest } from "../model/menu-types";
 
 // 메뉴에 옵션 추가
 export const useAddMenuOption = () => {

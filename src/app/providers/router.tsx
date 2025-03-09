@@ -8,9 +8,9 @@ import { UnauthenticatedRoute } from "@/features/auth/route/unauthenticated-rout
 import { AuthLayout } from "../layout/auth-layout";
 import { MainLayout } from "../layout/main-layout";
 
-const MenuManagementPage = lazy(() => import("@/pages/menu-management"));
+const MenuPage = lazy(() => import("@/features/menu/MenuPage"));
 const SettingsPage = lazy(() => import("@/pages/settings"));
-const OrderManagementPage = lazy(() => import("@/features/order/OrderManagementPage"));
+const OrderPage = lazy(() => import("@/features/order/OrderPage"));
 const UnauthorizedPage = lazy(() => import("@/features/auth/UnauthorizedPage"));
 
 export const AppRouter = () => {
@@ -30,8 +30,8 @@ export const AppRouter = () => {
         {/* 로그인한 사용자만 접근할 수 있는 페이지들 */}
         <Route element={<AuthenticatedRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/menu" element={<MenuManagementPage />} />
-            <Route path="/orders" element={<OrderManagementPage />} />
+            <Route path="/menu" element={<MenuPage />} />
+            <Route path="/orders" element={<OrderPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>

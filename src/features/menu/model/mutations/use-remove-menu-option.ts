@@ -1,8 +1,8 @@
+import { removeMenuOption } from "@/entities/menu/api/remove-menu-option";
+import { RemoveMenuOptionRequest } from "@/entities/menu/model/menu-types";
 import { ApiResponse, MessageResponse } from "@/shared/api/type";
 import { UseMutationResult, useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { removeMenuOption } from "../api/remove-menu-option";
-import { RemoveMenuOptionRequest } from "../model/menu-types";
 
 export const useRemoveMenuOption = () => {
   const mutation: UseMutationResult<

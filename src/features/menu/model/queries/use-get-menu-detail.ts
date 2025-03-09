@@ -1,8 +1,8 @@
+import { getMenuDetail } from "@/entities/menu/api/get-menu-detail";
+import { Menu } from "@/entities/menu/model/menu-types";
 import { ApiResponse } from "@/shared/api/type";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { getMenuDetail } from "../api/get-menu-detail";
-import { Menu } from "../model/menu-types";
 
 // 특정 메뉴의 상세 정보 가져오기
 export const useGetMenuDetail = (menuId: number) => {

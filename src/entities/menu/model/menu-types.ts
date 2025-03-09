@@ -1,4 +1,4 @@
-import { Option } from "./option-types";
+import { Option } from "@/entities/option/store/option-types";
 
 // 메뉴 기본 정보 타입
 export interface Menu {

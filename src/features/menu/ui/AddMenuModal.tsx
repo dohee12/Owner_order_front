@@ -1,6 +1,6 @@
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { Button } from "@/shared/ui/button";
-import { Option } from "@/entities/owner/model/option-types";
+import { Option } from "@/entities/option/store/option-types";
 
 export interface AddMenuFormValues {
   menu_name: string;

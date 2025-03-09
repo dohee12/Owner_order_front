@@ -12,6 +12,7 @@ export type OrderStatusType = keyof typeof OrderStatus;
 export type Order = {
   oid: number;
   order_at: string;
+  order_type: string;
   modified_at: string;
   order_status: OrderStatusType;
   order_number: number;
@@ -21,6 +22,7 @@ export type Order = {
 
 export type OrderDetail = {
   menu_name: string;
-  option_list: string[];
+  option_list: { name: string; quantity: number }[];
   quantity: number;
+  price: number;
 };

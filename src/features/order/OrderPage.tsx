@@ -2,7 +2,7 @@ import OrderList from "./ui/OrderList";
 import OrderDetails from "./ui/OrderDetails";
 import { useOrderStore } from "@/entities/order/store/order-store";
 
-const OrderManagementPage: React.FC = () => {
+const OrderPage: React.FC = () => {
   const { selectedOrder } = useOrderStore();
 
   return (
@@ -15,4 +15,4 @@ const OrderManagementPage: React.FC = () => {
   );
 };
 
-export default OrderManagementPage;
+export default OrderPage;
