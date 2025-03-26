@@ -1,11 +1,11 @@
-// entities/auth/api/auth-handler.ts
+// src/mocks/auth-handlers.ts
 import { LoginResponse, LoginRequest } from "@/entities/auth/model/auth-types";
 import { http, HttpResponse } from "msw";
 
 // 더미 사용자 데이터 (phoneNumber와 password를 사용)
 const Users = [
   {
-    phoneNumber: "01012345678",
+    phoneNumber: "01011112222",
     password: "admin",
     access_token: "dummy-access-token-admin",
     access_token_expiration: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
@@ -33,38 +33,22 @@ const Users = [
   },
 ];
 
-export const handlers = [
-  // 공백 제거: "/api/v1/owner/login" 으로 수정
+export const authHandlers = [
+  // POST /api/v1/owner/login
   http.post<LoginResponse, LoginRequest>("/api/v1/owner/login", async ({ request }) => {
     const { phoneNumber, password } = await request.json();
-
-    // 요청 데이터가 올바른지 확인
     if (!phoneNumber || !password) {
-      return new HttpResponse(
-        JSON.stringify({ error: "잘못된 요청입니다." }),
-        { status: 400 }
-      );
+      return new HttpResponse(JSON.stringify({ error: "잘못된 요청입니다." }), { status: 400 });
     }
-
-    // 해당 phoneNumber를 가진 사용자가 있는지 확인
     const user = Users.find((user) => user.phoneNumber === phoneNumber);
-
     if (!user) {
-      return new HttpResponse(
-        JSON.stringify({ error: "전화번호가 존재하지 않습니다." }),
-        { status: 404 }
-      );
+      return new HttpResponse(JSON.stringify({ error: "전화번호가 존재하지 않습니다." }), {
+        status: 404,
+      });
     }
-
-    // 비밀번호가 일치하는지 확인
     if (user.password !== password) {
-      return new HttpResponse(
-        JSON.stringify({ error: "비밀번호가 틀렸습니다." }),
-        { status: 401 }
-      );
+      return new HttpResponse(JSON.stringify({ error: "비밀번호가 틀렸습니다." }), { status: 401 });
     }
-
-    // 로그인 성공 시, LoginResponse에 맞는 데이터를 반환
     return HttpResponse.json(
       {
         access_token: user.access_token,
@@ -76,5 +60,23 @@ export const handlers = [
         },
       }
     );
+  }),
+
+  // POST /api/v1/owner/logout
+  http.post("/api/v1/owner/logout", () => {
+    return new HttpResponse(JSON.stringify({ message: "로그아웃 성공" }), {
+      status: 200,
+      headers: {
+        "Set-Cookie": "connect.sid=; Max-Age=0; Path=/",
+      },
+    });
+  }),
+
+  // POST /api/v1/owner/renew (ACCESS_TOKEN 재발급)
+  http.post("/api/v1/owner/renew", () => {
+    return HttpResponse.json({
+      access_token: "new-dummy-access-token",
+      access_token_expiration: new Date(Date.now() + 3600 * 1000).toISOString(),
+    });
   }),
 ];

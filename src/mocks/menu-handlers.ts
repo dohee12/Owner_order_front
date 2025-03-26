@@ -1,70 +1,152 @@
 import { http, HttpResponse } from "msw";
 
-// 메뉴 항목 타입 정의
-interface MenuItem {
-  id: string;
-  name: string;
-  price: number;
-}
-
-// 더미 메뉴 데이터
-const menuItems: MenuItem[] = [
-  { id: "item-001", name: "버거", price: 5000 },
-  { id: "item-002", name: "피자", price: 8000 },
-  { id: "item-003", name: "샐러드", price: 4000 },
+// in-memory 데이터 저장소
+const menus = [
+  {
+    id: 1,
+    menuName: "메뉴1",
+    price: 1000,
+    menuImg: "img1.png",
+    storeId: 1,
+    o_list: [{ id: 101, name: "옵션1", price: 100, required: true, storeId: 1 }],
+  },
+  {
+    id: 2,
+    menuName: "메뉴2",
+    price: 2000,
+    menuImg: "img2.png",
+    storeId: 1,
+    o_list: [{ id: 102, name: "옵션2", price: 200, required: false, storeId: 1 }],
+  },
 ];
 
-// 메뉴 관련 API 핸들러
-export const handlers = [
-  // 메뉴 목록 조회
-  http.get<never, never, { data: MenuItem[] }>("/api/menu", () => {
-    return HttpResponse.json({ data: menuItems }, { status: 200 });
+export const menuHandlers = [
+  // GET /api/v1/owner/menuList
+  http.get("/api/v1/owner/menuList", () => {
+    return HttpResponse.json(menus);
   }),
 
-  // 메뉴 항목 추가
-  http.post<never, MenuItem, { data: MenuItem }>(
-    "/api/menu",
-    async ({ request }) => {
-      const newItem: MenuItem = await request.json();
-      menuItems.push(newItem);
-      return HttpResponse.json({ data: newItem }, { status: 201 });
+  // GET /api/v1/owner/menu/detail
+  http.get("/api/v1/owner/menu/detail", ({ request }: { request: Request }) => {
+    const url = new URL(request.url);
+    const menu_id = url.searchParams.get("menu_id");
+    if (!menu_id) {
+      return new HttpResponse(JSON.stringify({ error: "menu_id parameter is required" }), {
+        status: 400,
+      });
     }
-  ),
-
-  // 메뉴 항목 수정
-  http.put<
-    { id: string },
-    Partial<MenuItem>,
-    { data?: MenuItem; error?: string }
-  >("/api/menu/:id", async ({ request, params }) => {
-    const updatedItem: Partial<MenuItem> = await request.json();
-    const index = menuItems.findIndex((item) => item.id === params.id);
-    if (index === -1) {
-      return HttpResponse.json(
-        { error: "메뉴 항목을 찾을 수 없습니다." },
-        { status: 404 }
-      );
+    const menu = menus.find((m) => m.id === Number(menu_id));
+    if (!menu) {
+      return new HttpResponse(JSON.stringify({ error: "메뉴를 찾을 수 없습니다." }), {
+        status: 404,
+      });
     }
-    menuItems[index] = { ...menuItems[index], ...updatedItem };
-    return HttpResponse.json({ data: menuItems[index] }, { status: 200 });
+    return HttpResponse.json(menu);
   }),
 
-  // 메뉴 항목 삭제
-  http.delete<{ id: string }, never, { message?: string; error?: string }>(
-    "/api/menu/:id",
-    ({ params }) => {
-      const index = menuItems.findIndex((item) => item.id === params.id);
-      if (index === -1) {
-        return HttpResponse.json(
-          { error: "메뉴 항목을 찾을 수 없습니다." },
-          { status: 404 }
-        );
-      }
-      menuItems.splice(index, 1);
-      return HttpResponse.json(
-        { message: "메뉴 항목이 삭제되었습니다." },
-        { status: 200 }
+  // POST /api/v1/owner/menu/create
+  http.post("/api/v1/owner/menu/create", async ({ request }: { request: Request }) => {
+    const { menu_name, price, opt_list } = await request.json();
+    const newId = menus.length ? Math.max(...menus.map((m) => m.id)) + 1 : 1;
+    const newMenu = {
+      id: newId,
+      menuName: menu_name,
+      price,
+      menuImg: "default.png", // 기본 이미지, 필요에 따라 변경 가능
+      storeId: 1,
+      o_list: opt_list || [],
+    };
+    menus.push(newMenu);
+    return HttpResponse.json(
+      { message: "메뉴가 정상적으로 추가되었습니다.", menu: newMenu },
+      { status: 201 }
+    );
+  }),
+
+  // PUT /api/v1/owner/menu/edit
+  http.put("/api/v1/owner/menu/edit", async ({ request }: { request: Request }) => {
+    const { menu_id, menu_name, price, opt_list } = await request.json();
+    const menuIndex = menus.findIndex((m) => m.id === menu_id);
+    if (menuIndex === -1) {
+      return new HttpResponse(JSON.stringify({ error: "메뉴를 찾을 수 없습니다." }), {
+        status: 404,
+      });
+    }
+    menus[menuIndex] = {
+      ...menus[menuIndex],
+      menuName: menu_name,
+      price,
+      o_list: opt_list,
+    };
+    return HttpResponse.json({
+      message: "메뉴가 정상적으로 수정되었습니다.",
+      menu: menus[menuIndex],
+    });
+  }),
+
+  // DELETE /api/v1/owner/menu/delete
+  http.delete("/api/v1/owner/menu/delete", ({ request }: { request: Request }) => {
+    const url = new URL(request.url);
+    const menu_id = url.searchParams.get("menu_id");
+    if (!menu_id) {
+      return new HttpResponse(JSON.stringify({ error: "menu_id parameter is required" }), {
+        status: 400,
+      });
+    }
+    const menuIndex = menus.findIndex((m) => m.id === Number(menu_id));
+    if (menuIndex === -1) {
+      return new HttpResponse(JSON.stringify({ error: "메뉴를 찾을 수 없습니다." }), {
+        status: 404,
+      });
+    }
+    menus.splice(menuIndex, 1);
+    return HttpResponse.json({ message: "메뉴가 정상적으로 삭제되었습니다." });
+  }),
+
+  // POST /api/v1/owner/menu/option/add
+  http.post("/api/v1/owner/menu/option/add", async ({ request }: { request: Request }) => {
+    const { menu_id, opt_list } = await request.json();
+    const menu = menus.find((m) => m.id === menu_id);
+    if (!menu) {
+      return new HttpResponse(JSON.stringify({ error: "메뉴를 찾을 수 없습니다." }), {
+        status: 404,
+      });
+    }
+    // 기존 옵션 목록에 새 옵션을 추가합니다.
+    menu.o_list = [...menu.o_list, ...opt_list];
+    return HttpResponse.json({
+      message: "메뉴에 옵션이 추가되었습니다.",
+      menu,
+    });
+  }),
+
+  // DELETE /api/v1/owner/menu/option/remove
+  http.delete("/api/v1/owner/menu/option/remove", ({ request }: { request: Request }) => {
+    const url = new URL(request.url);
+    const menu_id = url.searchParams.get("menu_id");
+    const option_id = url.searchParams.get("option_id");
+    if (!menu_id || !option_id) {
+      return new HttpResponse(
+        JSON.stringify({ error: "menu_id and option_id parameters are required" }),
+        { status: 400 }
       );
     }
-  ),
+    const menu = menus.find((m) => m.id === Number(menu_id));
+    if (!menu) {
+      return new HttpResponse(JSON.stringify({ error: "메뉴를 찾을 수 없습니다." }), {
+        status: 404,
+      });
+    }
+    const optionIndex = menu.o_list.findIndex((o) => o.id === Number(option_id));
+    if (optionIndex === -1) {
+      return new HttpResponse(JSON.stringify({ error: "옵션을 찾을 수 없습니다." }), {
+        status: 404,
+      });
+    }
+    menu.o_list.splice(optionIndex, 1);
+    return HttpResponse.json({
+      message: "메뉴에서 옵션이 제거되었습니다.",
+      menu,
+    });
+  }),
 ];
