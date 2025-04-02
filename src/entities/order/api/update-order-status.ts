@@ -1,5 +1,5 @@
 import axiosInstanceAuth from "@/shared/api/axios-instance-auth";
-import { OrderStatusType } from "../model/order-types";
+import { OrderStatusType, Order } from "../model/order-types";
 import { ApiResponse } from "@/shared/api/type";
 
 export type UpdateOrderStatusRequest = {
@@ -7,13 +7,17 @@ export type UpdateOrderStatusRequest = {
   status: OrderStatusType;
 };
 
+// ✅ ApiResponse<void> → ApiResponse<{ order: Order }>
 export const updateOrderStatus = async ({
   orderId,
   status,
-}: UpdateOrderStatusRequest): Promise<ApiResponse<void>> => {
-  const response = await axiosInstanceAuth.put<ApiResponse<void>>(
-    "/api/v1/owner/changeorderstatus",
-    { orderId, status }
+}: UpdateOrderStatusRequest): Promise<ApiResponse<{ order: Order }>> => {
+  const response = await axiosInstanceAuth.put<ApiResponse<{ order: Order }>>(
+    "/changeorderstatus",
+    {
+      orderId,
+      status,
+    }
   );
   return response.data;
 };

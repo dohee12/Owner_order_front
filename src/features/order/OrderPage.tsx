@@ -3,14 +3,14 @@ import OrderDetails from "./ui/OrderDetails";
 import { useOrderStore } from "@/entities/order/store/order-store";
 
 const OrderPage: React.FC = () => {
-  const { selectedOrder } = useOrderStore();
+  const { selectedOrder, setSelectedOrder } = useOrderStore();
 
   return (
     <div className="flex flex-1">
       {/* 주문 상세 정보 영역: 고정 크기로 표시 */}
       <OrderDetails order={selectedOrder} />
       {/* 주문 목록 영역: 이 영역만 스크롤 */}
-      <OrderList />
+      <OrderList selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder} />
     </div>
   );
 };

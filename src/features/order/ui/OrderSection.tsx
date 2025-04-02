@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from "react";
-import { Order } from "@/entities/order/model/order-types";
+import React, { useState, useCallback, useEffect, useRef } from "react";
+import { Order, OrderStatusType } from "@/entities/order/model/order-types";
 import {
   getBadgeClasses,
   getMenuSummary,
@@ -8,7 +8,7 @@ import {
   getNextButtonLabel,
 } from "@/entities/order/lib/order-utils";
 import { differenceInDays, differenceInHours, differenceInMinutes } from "date-fns";
-import { getOrderStatusName } from "@/entities/order/lib/order-utils"; // 함수 임포트
+import { getOrderStatusName } from "@/entities/order/lib/order-utils";
 
 // 상대 시간 계산 함수
 const getRelativeTime = (dateString: string): string => {
@@ -28,7 +28,7 @@ interface OrderSectionProps {
   orderList: Order[];
   selectedOrderId: number | null;
   onSelectOrder: (order: Order) => void;
-  onUpdateStatus?: (order: Order, newStatus: string) => void;
+  onUpdateStatus?: (order: Order, newStatus: OrderStatusType) => void;
 }
 
 const OrderSection: React.FC<OrderSectionProps> = ({
@@ -39,23 +39,29 @@ const OrderSection: React.FC<OrderSectionProps> = ({
   onUpdateStatus,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   // 콜백 ref를 사용하여 내부 콘텐츠의 높이를 DOM에 직접 설정
-  const contentRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (node) {
-        node.style.transition = "max-height 300ms ease, opacity 300ms ease";
-        if (isOpen) {
-          node.style.maxHeight = `${node.scrollHeight}px`;
-          node.style.opacity = "1";
-        } else {
-          node.style.maxHeight = "0px";
-          node.style.opacity = "0";
-        }
+
+  // ✅ 높이 재계산 함수
+  const updateContentHeight = useCallback(() => {
+    const node = contentRef.current;
+    if (node) {
+      node.style.transition = "max-height 300ms ease, opacity 300ms ease";
+      if (isOpen) {
+        node.style.maxHeight = `${node.scrollHeight}px`;
+        node.style.opacity = "1";
+      } else {
+        node.style.maxHeight = "0px";
+        node.style.opacity = "0";
       }
-    },
-    [isOpen]
-  );
+    }
+  }, [isOpen]);
+
+  // ✅ 접기/펼치기 시 반영
+  useEffect(() => {
+    updateContentHeight();
+  }, [updateContentHeight, orderList]);
 
   return (
     <div>
@@ -105,7 +111,7 @@ const OrderSection: React.FC<OrderSectionProps> = ({
                           className="px-3 py-1 text-sm text-white bg-blue-500 border border-blue-500 rounded hover:bg-blue-700 hover:border-blue-700"
                           onClick={(e) => {
                             e.stopPropagation();
-                            onUpdateStatus(order, nextStatus);
+                            onUpdateStatus?.(order, nextStatus as OrderStatusType);
                           }}
                         >
                           {nextButtonLabel}

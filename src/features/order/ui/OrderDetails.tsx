@@ -1,5 +1,5 @@
 import React from "react";
-import { Order } from "@/entities/order/model/order-types";
+import { Order, OrderStatusType } from "@/entities/order/model/order-types";
 import {
   getBadgeClasses,
   getNextButtonLabel,
@@ -8,12 +8,15 @@ import {
   getOrderTotal,
 } from "@/entities/order/lib/order-utils";
 import { Button } from "@/shared/ui/button";
+import { useUpdateOrderStatus } from "@/entities/order/hook/use-update-order-status"; // ✅ 추가
 
 interface OrderDetailsProps {
   order: Order | null;
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
+  const { mutate: updateStatus } = useUpdateOrderStatus();
+
   if (!order) {
     return (
       <section className="flex-1 p-6 overflow-auto bg-gray-50">
@@ -24,6 +27,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   }
 
   const overallTotal = getOrderTotal(order);
+  const isFinal = order.order_status === "COMPLETED" || order.order_status === "CANCELED";
 
   return (
     <section className="flex-1 p-4 overflow-auto bg-gray-50">
@@ -46,29 +50,34 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
               <p>{order.order_at}</p>
             </div>
           </div>
-          {/* 주문 번호 (세 번째) */}
 
           <div className="flex gap-2">
-            {/* 주문 취소 버튼 (같은 위치에 배치) */}
             <Button
               variant="outline"
               className="w-24 h-10 text-sm font-bold text-red-500 border-red-500 hover:bg-red-100"
             >
               주문 취소
             </Button>
+
             <button
               className={`w-24 h-10 text-sm font-bold rounded ${
-                order.order_status === "COMPLETED" || order.order_status === "CANCELED"
+                isFinal
                   ? "bg-gray-400 text-white cursor-not-allowed"
                   : "bg-blue-500 text-white hover:bg-green-600"
               }`}
               onClick={(e) => {
                 e.stopPropagation();
-                if (order.order_status !== "COMPLETED" && order.order_status !== "CANCELED") {
-                  onUpdateStatus(order, getNextStatus(order.order_status));
+                if (!isFinal) {
+                  const nextStatus = getNextStatus(order.order_status);
+                  if (nextStatus) {
+                    updateStatus({
+                      orderId: order.oid,
+                      status: nextStatus as OrderStatusType, // ✅ 타입 단언
+                    });
+                  }
                 }
               }}
-              disabled={order.order_status === "COMPLETED" || order.order_status === "CANCELED"}
+              disabled={isFinal}
             >
               {getNextButtonLabel(order.order_status)}
             </button>
