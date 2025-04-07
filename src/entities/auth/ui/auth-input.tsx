@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from "react";
+import { forwardRef, useState } from "react";
 import { FieldError } from "react-hook-form";
 
 interface AuthInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -20,9 +20,7 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
           <input
             ref={ref}
             {...props}
-            type={
-              type === "password" && !isPasswordVisible ? "password" : "text"
-            }
+            type={type === "password" && !isPasswordVisible ? "password" : "text"}
             className={`border p-2 w-full pr-10 rounded ${
               error ? "border-red-500" : "border-gray-300"
             }`}
