@@ -169,3 +169,23 @@ cafe-management/
 └── README.md
 
 ```
+
+## 📌 파일 및 폴더 네이밍 규칙
+
+| **이름 유형**    | **사용 케이스** | **예시**                                     |
+| ---------------- | --------------- | -------------------------------------------- |
+| 📂 **폴더명**    | `kebab-case`    | `menu-management/`, `order-management/` ✅   |
+| 📄 **파일명**    | `kebab-case`    | `use-get-menu-list.ts`, `create-order.ts` ✅ |
+| 🛠 **API 함수명** | `camelCase`     | `getMenuList()`, `createOrder()` ✅          |
+| ⚡ **React 훅**  | `camelCase`     | `useGetMenuList()`, `useCreateOrder()` ✅    |
+| 🎨 **컴포넌트**  | `PascalCase`    | `<MenuCard />`, `<OrderList />` ✅           |
+| 🎭 **클래스**    | `PascalCase`    | `class MenuService {}` ✅                    |
+
+| **이름 유형**         | **사용 케이스**  | **예시**                                          |
+| --------------------- | ---------------- | ------------------------------------------------- |
+| 📂 **폴더명**         | `kebab-case`     | `menu-management/`, `order-management/` ✅        |
+| 📄 **컴포넌트 파일**  | `PascalCase.tsx` | `OrderList.tsx`, `OrderDetails.tsx` ✅            |
+| 📄 **API 파일**       | `kebab-case.ts`  | `get-order-list.ts`, `create-order.ts` ✅         |
+| 📄 **훅 파일**        | `kebab-case.ts`  | `use-get-order-list.ts`, `use-create-order.ts` ✅ |
+| 📄 **타입 정의 파일** | `kebab-case.ts`  | `order-types.ts` ✅                               |
+| 📄 **스토어 파일**    | `kebab-case.ts`  | `order-store.ts` ✅                               |

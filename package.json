@@ -3,20 +3,28 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist-electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "electron:dev": "tsc && vite build && electron-builder",
+    "electron:build": "tsc && vite build && electron-builder"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.62.16",
+    "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "compose-function": "^3.0.3",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.54.2",
+    "react-icons": "^5.4.0",
     "react-router-dom": "^7.1.1",
+    "react-spinners": "^0.15.0",
     "tailwind-merge": "^2.6.0",
     "zustand": "^5.0.3"
   },
@@ -29,14 +37,32 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
+    "msw": "^2.7.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "vite-plugin-electron": "^0.28.6",
+    "vite-plugin-electron-renderer": "^0.14.5",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  },
+  "build": {
+    "files": [
+      "dist/**",
+      "dist-electron/main.js",
+      "dist-electron/preload.mjs"
+    ]
   }
 }
