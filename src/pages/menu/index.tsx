@@ -3,11 +3,11 @@ import { Button } from "@/shared/ui/button";
 import { Menu } from "@/entities/menu/model/menu-types";
 import { MenuCard } from "@/features/menu/ui/MenuCard";
 import { AddMenuModal } from "@/features/menu/ui/AddMenuModal";
-import { MenuDetailModal } from "@/features/menu/ui/MenuDetailModal";
 import { ConfirmModal } from "@/features/menu/ui/ConfirmModal";
 import { useConfirmAction } from "@/features/menu/model/use-confirm-action";
 import { useGetMenuList } from "@/features/menu/model/queries/use-get-menu-list";
 import { useMenuActions } from "@/features/menu/model/use-menu-actions";
+import { MenuDetailModal } from "@/widgets/menu/MenuDetailModal";
 
 const dummyData = [
   {
