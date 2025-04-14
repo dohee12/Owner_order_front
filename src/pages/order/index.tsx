@@ -1,6 +1,6 @@
-import OrderList from "./ui/OrderList";
-import OrderDetails from "./ui/OrderDetails";
 import { useOrderStore } from "@/entities/order/store/order-store";
+import OrderDetails from "@/features/order/ui/OrderDetails";
+import OrderList from "@/features/order/ui/OrderList";
 
 const OrderPage: React.FC = () => {
   const { selectedOrder, setSelectedOrder } = useOrderStore();

@@ -6,8 +6,8 @@ import { AddMenuModal } from "@/features/menu/ui/AddMenuModal";
 import { MenuDetailModal } from "@/features/menu/ui/MenuDetailModal";
 import { ConfirmModal } from "@/features/menu/ui/ConfirmModal";
 import { useConfirmAction } from "@/features/menu/model/use-confirm-action";
-import { useGetMenuList } from "./model/queries/use-get-menu-list";
-import { useMenuActions } from "./model/use-menu-actions";
+import { useGetMenuList } from "@/features/menu/model/queries/use-get-menu-list";
+import { useMenuActions } from "@/features/menu/model/use-menu-actions";
 
 const dummyData = [
   {

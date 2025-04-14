@@ -6,22 +6,22 @@ import {
   getOrderTotal,
   getNextStatus,
   getNextButtonLabel,
+  getOrderStatusName,
 } from "@/entities/order/lib/order-utils";
-import { differenceInDays, differenceInHours, differenceInMinutes } from "date-fns";
-import { getOrderStatusName } from "@/entities/order/lib/order-utils";
+// import { differenceInDays, differenceInHours, differenceInMinutes } from "date-fns";
 
-// 상대 시간 계산 함수
-const getRelativeTime = (dateString: string): string => {
-  const now = new Date();
-  const date = new Date(dateString);
-  const minutesDiff = differenceInMinutes(now, date);
-  if (minutesDiff < 1) return "방금 전";
-  if (minutesDiff < 60) return `${minutesDiff}분 전`;
-  const hoursDiff = differenceInHours(now, date);
-  if (hoursDiff < 24) return `${hoursDiff}시간 전`;
-  const daysDiff = differenceInDays(now, date);
-  return `${daysDiff}일 전`;
-};
+// // 상대 시간 계산 함수
+// const getRelativeTime = (dateString: string): string => {
+//   const now = new Date();
+//   const date = new Date(dateString);
+//   const minutesDiff = differenceInMinutes(now, date);
+//   if (minutesDiff < 1) return "방금 전";
+//   if (minutesDiff < 60) return `${minutesDiff}분 전`;
+//   const hoursDiff = differenceInHours(now, date);
+//   if (hoursDiff < 24) return `${hoursDiff}시간 전`;
+//   const daysDiff = differenceInDays(now, date);
+//   return `${daysDiff}일 전`;
+// };
 
 interface OrderSectionProps {
   title: string;
@@ -67,11 +67,11 @@ const OrderSection: React.FC<OrderSectionProps> = ({
     <div>
       <div
         className="px-4 py-2 text-sm font-semibold text-gray-700 border-b cursor-pointer select-none bg-gray-50"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen((prev) => !prev)}
       >
         {title} {orderList.length}건 {isOpen ? "▼" : "▲"}
       </div>
-      <div ref={contentRef} className="overflow-hidden">
+      <div ref={contentRef} className="overflow-hidden transition-all duration-300">
         <ul>
           {orderList.map((order) => {
             const nextStatus = getNextStatus(order.order_status);
@@ -93,7 +93,7 @@ const OrderSection: React.FC<OrderSectionProps> = ({
                         </p>
                         {order.oid}
                         <span className="ml-2 text-sm text-gray-500">
-                          {getRelativeTime(order.order_at)}
+                          {new Date(order.order_at).toLocaleTimeString()}
                         </span>
                       </div>
                       <span className={getBadgeClasses(order.order_status)}>

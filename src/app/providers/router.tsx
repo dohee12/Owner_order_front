@@ -2,16 +2,16 @@ import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { Loader } from "@/shared/ui/loader";
-import { LoginPage } from "@/features/auth/LoginPage";
 import { AuthenticatedRoute } from "@/features/auth/route/authenticated-route";
 import { UnauthenticatedRoute } from "@/features/auth/route/unauthenticated-route";
 import { AuthLayout } from "../layout/auth-layout";
 import { MainLayout } from "../layout/main-layout";
+import { LoginPage } from "../../pages/auth/login";
 
-const MenuPage = lazy(() => import("@/features/menu/MenuPage"));
+const MenuPage = lazy(() => import("@/pages/menu"));
 const SettingsPage = lazy(() => import("@/pages/settings"));
-const OrderPage = lazy(() => import("@/features/order/OrderPage"));
-const UnauthorizedPage = lazy(() => import("@/features/auth/UnauthorizedPage"));
+const OrderPage = lazy(() => import("@/pages/order"));
+const UnauthorizedPage = lazy(() => import("@/pages/auth/unauthorized"));
 
 export const AppRouter = () => {
   return (
