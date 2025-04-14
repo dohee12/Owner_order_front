@@ -6,12 +6,12 @@ import { AuthenticatedRoute } from "@/features/auth/route/authenticated-route";
 import { UnauthenticatedRoute } from "@/features/auth/route/unauthenticated-route";
 import { AuthLayout } from "../layout/auth-layout";
 import { MainLayout } from "../layout/main-layout";
-import { LoginPage } from "../../pages/auth/login";
+import { LoginPage } from "../../pages/login";
 
 const MenuPage = lazy(() => import("@/pages/menu"));
 const SettingsPage = lazy(() => import("@/pages/settings"));
-const OrderPage = lazy(() => import("@/pages/order"));
-const UnauthorizedPage = lazy(() => import("@/pages/auth/unauthorized"));
+const OrderPage = lazy(() => import("@/pages/order-management"));
+const UnauthorizedPage = lazy(() => import("@/pages/unauthorized"));
 
 export const AppRouter = () => {
   return (
