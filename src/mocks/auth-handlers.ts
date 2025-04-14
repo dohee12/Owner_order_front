@@ -40,7 +40,9 @@ export const authHandlers = [
     if (!phoneNumber || !password) {
       return new HttpResponse(JSON.stringify({ error: "잘못된 요청입니다." }), { status: 400 });
     }
-    const user = Users.find((user) => user.phoneNumber === phoneNumber);
+    const user = Users.find(
+      (user) => user.phoneNumber === phoneNumber && user.password === password
+    );
     if (!user) {
       return new HttpResponse(JSON.stringify({ error: "전화번호가 존재하지 않습니다." }), {
         status: 404,
