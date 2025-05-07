@@ -69,6 +69,14 @@ const OrderList: React.FC<OrderListProps> = ({ selectedOrder, setSelectedOrder }
     return render(activeStatus, sectionMap[activeStatus]);
   };
 
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
+
+  if (error) {
+    return <div>에러 발생: {error}</div>;
+  }
+
   return (
     <aside className="flex flex-col flex-1 min-h-0 bg-white border-r md:w-1/2">
       <div className="flex items-center justify-between px-4 py-2 border-b">

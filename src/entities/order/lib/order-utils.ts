@@ -1,4 +1,4 @@
-import { Order } from "../model/order-types";
+import { Order, OrderStatusType } from "../model/order-types";
 
 // 주문 상태별 Badge 클래스 반환 함수
 export const getBadgeClasses = (status: string): string => {
@@ -58,7 +58,7 @@ export const selectDefaultOrder = (orders: Order[]): Order | null => {
 };
 
 // 상태 전환 헬퍼 함수 (다음 상태 값)
-export const getNextStatus = (current: string): string | null => {
+export const getNextStatus = (current: string): OrderStatusType | null => {
   if (current === "PENDING") return "ACCEPTED";
   if (current === "ACCEPTED") return "COMPLETED";
   return null;

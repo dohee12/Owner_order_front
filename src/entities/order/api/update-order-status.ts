@@ -7,7 +7,6 @@ export type UpdateOrderStatusRequest = {
   status: OrderStatusType;
 };
 
-// ✅ ApiResponse<void> → ApiResponse<{ order: Order }>
 export const updateOrderStatus = async ({
   orderId,
   status,
