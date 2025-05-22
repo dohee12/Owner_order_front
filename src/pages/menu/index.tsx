@@ -156,33 +156,59 @@ const MenuPage = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   // 메뉴 상세 데이터
-  const selectedMenuDetail = menus.find((menu) => menu.id === selectedMenuId) || null;
+  const selectedMenuDetail =
+    menus.find((menu) => menu.id === selectedMenuId) || null;
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading menus</p>;
 
   return (
     <div className="w-full p-6 space-y-5">
+      {/* 상단 헤더 */}
       <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
         <h1 className="text-2xl font-bold">메뉴 관리</h1>
         <Button onClick={() => setIsAddModalOpen(true)}>새 메뉴 추가</Button>
       </div>
 
-      <div className="grid items-stretch grid-cols-1 gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
-        {menus.map((menu) => (
-          <MenuCard
-            key={menu.id}
-            menu={menu}
-            onEdit={(menuId) => {
-              setSelectedMenuId(menuId);
-              setIsDetailModalOpen(true);
-            }}
-            onDelete={(menuId) => openConfirmModal("delete", menuId)}
-            onToggleSoldOut={(menuId) => openConfirmModal("soldout", menuId)}
-          />
-        ))}
+      {/* 좌우 레이아웃 */}
+      <div className="flex gap-6">
+        {/* 왼쪽: 메뉴 리스트 */}
+        <div className="w-1/2 space-y-4 max-h-[80vh] overflow-y-auto pr-2">
+          {menus.map((menu) => (
+            <div key={menu.id} onClick={() => setSelectedMenuId(menu.id)}>
+              <MenuCard
+                menu={menu}
+                onEdit={() => {
+                  setSelectedMenuId(menu.id);
+                  setIsAddModalOpen(true);
+                }}
+                onDelete={() => openConfirmModal("delete", menu.id)}
+                onToggleSoldOut={() => openConfirmModal("soldout", menu.id)}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* 오른쪽: 선택한 메뉴 상세 */}
+        <div className="w-1/2">
+          {selectedMenuDetail ? (
+            <MenuCard
+              menu={selectedMenuDetail}
+              onEdit={() => setIsDetailModalOpen(true)}
+              onDelete={() => openConfirmModal("delete", selectedMenuDetail.id)}
+              onToggleSoldOut={() =>
+                openConfirmModal("soldout", selectedMenuDetail.id)
+              }
+            />
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-400">
+              왼쪽에서 메뉴를 선택해주세요
+            </div>
+          )}
+        </div>
       </div>
 
+      {/* 모달들 */}
       <AddMenuModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
@@ -195,7 +221,6 @@ const MenuPage = () => {
         onClose={() => setIsDetailModalOpen(false)}
       />
 
-      {/* 확인 모달 (삭제/매진 처리) */}
       <ConfirmModal
         isOpen={isConfirmModalOpen}
         title={confirmAction === "delete" ? "메뉴 삭제 확인" : "매진 처리 확인"}
