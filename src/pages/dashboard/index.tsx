@@ -1,7 +1,7 @@
-import { SalesChart } from '@/features/dashboard/ui/SalesChart';
-import { OrderStats } from '@/features/dashboard/ui/OrderStats';
-import { PopularItems } from '@/features/dashboard/ui/PopularItems';
-import { RecentOrders } from '@/features/dashboard/ui/RecentOrders';
+import { SalesChart } from "@/features/dashboard/ui/SalesChart";
+import { OrderStats } from "@/features/dashboard/ui/OrderStats";
+import { PopularItems } from "@/features/dashboard/ui/PopularItems";
+import { RecentOrders } from "@/features/dashboard/ui/RecentOrders";
 
 export const DashboardPage = () => {
   return (
@@ -13,6 +13,7 @@ export const DashboardPage = () => {
             <div className="flex-1 min-h-0 flex flex-col">
               <SalesChart />
             </div>
+
             <div className="flex-1 min-h-0 flex flex-col">
               <RecentOrders />
             </div>
