@@ -18,6 +18,9 @@ export const AppRouter = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
+        {/* 루트 경로 리디렉션 추가 */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
         {/* 로그인하지 않은 사용자가 접근해야 할 페이지 */}
         <Route element={<UnauthenticatedRoute />}>
           <Route element={<AuthLayout />}>
